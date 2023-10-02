@@ -1,15 +1,24 @@
 ﻿/*
+ * CIS 350 Game Production
  * Jacob Zydorowicz, Anna Breuker, Ian Connors
- * Project 2 Mole Mania
+ * Mole Mania
  * Moves crit spots on machine based on running timer
+ * Last Updated: October first 2023
  */
+#region imported namespaces
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using UnityEngine.UI;
+using static System.Net.Mime.MediaTypeNames;
+#endregion
 
 public class MachineMovement : MonoBehaviour
 {
+    Header["Machine Actions"]
+    #region variables
+    public Text timeText;
     public int correctPats;
     public int phaseNum;
 
@@ -39,6 +48,7 @@ public class MachineMovement : MonoBehaviour
     public AudioSource failedPatternSound;
     public AudioSource normalPlayMusic;
     public AudioSource goodEndingMusic;
+    #endregion
 
     void Start()
     {
@@ -58,7 +68,6 @@ public class MachineMovement : MonoBehaviour
         
         healthBarGameObject.SetActive(false);
 
-        //gets current and future positons of moving lights
         newTopLightPos = new Vector3(lights[4].gameObject.transform.position.x, lights[4].gameObject.transform.position.y, lights[4].gameObject.transform.position.z) + new Vector3(0f, 3f, 0f);
         oldTopPos = new Vector3(lights[4].gameObject.transform.position.x, lights[4].gameObject.transform.position.y, lights[4].gameObject.transform.position.z);
 
@@ -75,8 +84,6 @@ public class MachineMovement : MonoBehaviour
         //"Phase 1" of machine where player plays simons says with machine lights
         if (!timer.gameOver&&timer.timerIsRunning)
         {
-          
-
             //activates healthbar when first light is hit
             if(!activeHealth && firstLight)
             {
@@ -163,6 +170,7 @@ public class MachineMovement : MonoBehaviour
      
     }
 
+    #region methods
     IEnumerator machineBreakFlashiness(Material oldMat, Material newMat, int flashes)
 	{
         matChange = true;
@@ -352,4 +360,5 @@ public class MachineMovement : MonoBehaviour
             return 0f;
        
     }
+    #endregion
 }

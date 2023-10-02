@@ -1,14 +1,22 @@
 ﻿/*
+ * CIS 350 Game Production
  * Jacob Zydorowicz, Ian Connors, Caleb Kahn
- * Project 5
+ * PlayerMovement.cs
  * Controls player movement and actions in overworld
+ * Last Updated: October first 2023
  */
+#region imported namespaces
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
+#endregion
 
 public class PlayerMovement : MonoBehaviour
 {
+    Header["MOVEMENT"]
+    #region variables
     public float xSpeed;
     public float ySpeed;
     public float walkSpeed;
@@ -20,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
 
     public float maxDistence = .3f;
     private Vector2 previousLocation;
+    #endregion
 
     private void Start()
     {
@@ -29,42 +38,6 @@ public class PlayerMovement : MonoBehaviour
         StartCoroutine(SpriteGlitch());
         drunkStat = GetComponent<PlayerStats>();
         inDrunkenMovment = false;
-    }
-
-    IEnumerator WaitOnStart()
-    {
-        yield return new WaitForSeconds(.5f);
-        canMove = true;
-    }
-
-    IEnumerator DrunkenMovment()
-    {
-        inDrunkenMovment = true;
-        yield return new WaitForSeconds(UnityEngine.Random.Range(2f, 7f));
-        walkSpeed = walkSpeed * -1;
-        inDrunkenMovment = false;
-    }
-
-    IEnumerator UpdatePosition()
-    {
-        while(true)
-        {
-            previousLocation = transform.position;
-            yield return new WaitForEndOfFrame();
-        }
-    }
-
-    IEnumerator SpriteGlitch()
-	{
-        while (true)
-		{
-            yield return new WaitForSeconds(Random.Range(1.1f, 2.1f));
-            Anim.SetBool("Glitch", true);
-            yield return new WaitForSeconds(Random.Range(0.2f, 0.7f));
-            Anim.SetBool("Glitch", false);
-		}
-        
-
     }
 
     // Update is called once per frame
@@ -79,6 +52,8 @@ public class PlayerMovement : MonoBehaviour
         {
             walkSpeed = walkSpeed * -1;
         }
+
+        //determines player rotation based on input
         if (canMove)
         {
             xSpeed = Input.GetAxis("Horizontal");
@@ -119,5 +94,43 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
+
+    #region IEnumerators
+    IEnumerator WaitOnStart()
+    {
+        yield return new WaitForSeconds(.5f);
+        canMove = true;
+    }
+
+    IEnumerator DrunkenMovment()
+    {
+        inDrunkenMovment = true;
+        yield return new WaitForSeconds(UnityEngine.Random.Range(2f, 7f));
+        walkSpeed = walkSpeed * -1;
+        inDrunkenMovment = false;
+    }
+
+    IEnumerator UpdatePosition()
+    {
+        while (true)
+        {
+            previousLocation = transform.position;
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    IEnumerator SpriteGlitch()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(Random.Range(1.1f, 2.1f));
+            Anim.SetBool("Glitch", true);
+            yield return new WaitForSeconds(Random.Range(0.2f, 0.7f));
+            Anim.SetBool("Glitch", false);
+        }
+
+
+    }
+    #endregion
 }
 

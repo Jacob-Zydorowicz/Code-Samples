@@ -1,24 +1,24 @@
-﻿
-/*
+﻿/*
+ * CIS 350 Game Production
  * Jacob Zydorowicz
- * Project 5
- * Spawns conflict clouds
+ * Anxiety The Game
+ * Spawns conflict clouds around the map
+ * Last Updated: October first 2023
  */
-
+#region imported namespaces
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
+#endregion
 
 public class CloudSpawn : MonoBehaviour
 {
-    public GameObject cloudPrefab;
+    Header["Cloud Spawner"]
+    [Serializable] GameObject cloudPrefab;
 
-  
-    void Start()
-    {
-        //StartCoroutine(SpawnRandomPrefabWithCoroutine());
-    }
-
+    //spawns clouds randomly between a 1 nd 5 second interval
     IEnumerator SpawnRandomPrefabWithCoroutine()
     {
         while(true)
@@ -35,19 +35,17 @@ public class CloudSpawn : MonoBehaviour
             Vector2 spawnPos = new Vector2(transform.position.x, Random.Range(-3.0f, 5.0f));
             int side = Random.Range(0, 1);
 
-            //side = 0,left side
-            //side = 1,right side
+            //spawns on left side of screen
             if ((side == 0) && gameObject.CompareTag("Spawn Left"))
             {
                 spawnPos = new Vector2(transform.position.x, Random.Range(-3.0f, 5.0f));
             }
+            //spawns on right side of screen
             else if ((side == 1) && gameObject.CompareTag("Spawn Right"))
             {
                 spawnPos = new Vector2(transform.position.x, Random.Range(-3.0f, 5.0f));
             }
 
             Instantiate(cloudPrefab, spawnPos, cloudPrefab.transform.rotation);
-        
-     
     }
 }

@@ -1,14 +1,21 @@
 ﻿/*
+ * CIS 350 Game Production
  * Jacob Zydorowicz, Caleb Kahn
- * Project 5
+ * Anxiety The Game
  * Allows clouds to fly towards player
+ * Last Updated: October first 2023
  */
+#region imported namespaces
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
+#endregion
 
 public class CloudMovement : MonoBehaviour
 {
+    Header["Cloud movement"]
+    #region Variables
     private Transform player;
     public float averageSpeed = 3;
     public bool inBattle = false;
@@ -17,17 +24,14 @@ public class CloudMovement : MonoBehaviour
     private float range;
 
     private Vector3 direction;
-    //private Vector3 leftBound;
-    //private Vector3 rightBound;
 
     private bool increaseSpeed = false;
     public bool canDie = true;
     public ParticleSystem smoke;
+    #endregion
 
     private void Start()
     {
-        //leftBound = GameObject.FindGameObjectWithTag("Spawn Left").GetComponent<Transform>().position;
-        //rightBound = GameObject.FindGameObjectWithTag("Spawn Right").GetComponent<Transform>().position;
         increaseSpeed = (Random.value > 0.5f);
         speed = Random.Range(averageSpeed / 2, averageSpeed * 3 / 2);
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
@@ -69,12 +73,6 @@ public class CloudMovement : MonoBehaviour
             {
                 Destroy(gameObject);
             }
-            /*
-            if (transform.position.x < leftBound.x || transform.position.x > rightBound.x)
-            {
-                Destroy(gameObject);
-
-            }*/
         }
     }
 }

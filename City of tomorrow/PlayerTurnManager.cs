@@ -1,15 +1,20 @@
 /*
- * (Jacob Welch, Jacob Zydorowicz)
- * (PlayerTurnManager)
- * (CitySim)
- * (Description: )
+ * CIS 450 Programming design patterns
+ * Jacob Welch, Jacob Zydorowicz
+ * City of Tomorrow
+ * Manages player turns
+ * Last Updated: October first 2023
  */
+#region imported namespaces
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
+#endregion
 
 public class PlayerTurnManager : MonoBehaviour
 {
+    Header["Turn Manager"]
     #region Fields
     [SerializeField] int maxTurns = 50;
     [SerializeField] float baseCO2rate = .1f;

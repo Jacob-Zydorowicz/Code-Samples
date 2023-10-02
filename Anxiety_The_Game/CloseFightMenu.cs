@@ -1,15 +1,23 @@
-﻿using System.Collections;
+﻿/*
+ * CIS 350 Game Production
+ * Anna Breuker, Caleb Kahn, Jacob Zydorowicz
+ * Anxiety The Game
+ * Closes the fight menu when a battle is won or lost.
+ * Last Updated: October first 2023
+ */
+#region imported namespaces
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-/*
- * Anna Breuker, Caleb Kahn, Jacob Zydorowicz
- * Project 5 
- * Closes the fight menu when a battle is won or lost.
- */
+using System.Runtime.Remoting.Messaging;
+#endregion
+
 public class CloseFightMenu : MonoBehaviour
 {
+    Header["Close fight menu"]
+    #region variables
     private OverworldAnxietyEffect worldEffect;
     private PlayerStats playerStats;
     private Text description;
@@ -34,8 +42,9 @@ public class CloseFightMenu : MonoBehaviour
 
     private PlayerMovement player;
     private CheckpointTrigger[] checkpoints;
+    #endregion
 
-    // Start is called before the first frame update
+    //assigns variables
     void Start()
     {
         openFMScript = GameObject.FindGameObjectWithTag("Player").GetComponent<OpenFightMenu>();
@@ -43,13 +52,13 @@ public class CloseFightMenu : MonoBehaviour
         hoverDesc = GameObject.FindGameObjectWithTag("Attack 1").GetComponent<HoverDescriptionVisable>();
 
         playerStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
-        //fightMenu = GameObject.FindGameObjectWithTag("FightMenu");
         fightMenuScript = GameObject.FindGameObjectWithTag("Player").GetComponent<OpenFightMenu>();
         worldEffect = GameObject.FindGameObjectWithTag("AnxietyEffect").GetComponent<OverworldAnxietyEffect>();
         description = GameObject.FindGameObjectWithTag("DescriptionBox").GetComponentInChildren<Text>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         GameObject[] temp = GameObject.FindGameObjectsWithTag("Checkpoint");
         checkpoints = new CheckpointTrigger[temp.Length];
+
         for (int i = 0; i < temp.Length; i++)
         {
             checkpoints[i] = temp[i].GetComponent<CheckpointTrigger>();
@@ -59,6 +68,7 @@ public class CloseFightMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //determines result of battle
         if (playerStats.attributes[2].value.BaseValue <= 0 && fightMenuScript.enemyEncountered == finalBoss)
         {
             description.text = "Is this it..? Is it really over? [Press space to continue]";
@@ -76,6 +86,7 @@ public class CloseFightMenu : MonoBehaviour
             description.text = "You are overwhelmed... [Press space to continue]";
             StartCoroutine(Lose());
         }
+
         if (gameOver)
         {
             if (Input.GetKeyDown(KeyCode.R))
@@ -98,11 +109,12 @@ public class CloseFightMenu : MonoBehaviour
                 openFMScript.playerAudio.PlayDelayed(0.5f);
             }
         }
+        
         if (win)
         {
             if (Input.GetKeyDown(KeyCode.R))
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);//We can add restarting in later
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
                 youWinScreen.SetActive(false);
                 win = false;
                 fightMenu.SetActive(false);
@@ -116,12 +128,14 @@ public class CloseFightMenu : MonoBehaviour
         }
     }
 
+    
     public void EndFightEarly()
     {
-        Debug.Log("Ending Encounter");
         StartCoroutine(BattleOverEarly());
     }
 
+    #region IEnumerators
+    //ends battle
     IEnumerator BattleOver()
     {
         openFMScript.fightMusic.Stop();
@@ -156,7 +170,8 @@ public class CloseFightMenu : MonoBehaviour
         hoverDesc.mouseOver = false;
         hoverDesc.descriptionCanvas.SetActive(false);
     }
-
+    
+    //battle win actions
     IEnumerator Win()
     {
         openFMScript.playerAudio.Stop();
@@ -182,6 +197,7 @@ public class CloseFightMenu : MonoBehaviour
         hoverDesc.descriptionCanvas.SetActive(false);
     }
 
+    //battle lose actions
     IEnumerator Lose()
     {
         openFMScript.playerAudio.Stop();
@@ -208,6 +224,7 @@ public class CloseFightMenu : MonoBehaviour
 
     }
 
+    //battle over early actions
     IEnumerator BattleOverEarly()
     {
         while (!Input.GetKey(KeyCode.Space))
@@ -227,4 +244,5 @@ public class CloseFightMenu : MonoBehaviour
         openFMScript.fightMusic.Stop();
         openFMScript.playerAudio.PlayDelayed(0.5f);
     }
+#endregion
 }

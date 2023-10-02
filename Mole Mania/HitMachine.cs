@@ -1,14 +1,22 @@
 ﻿/*
+ * CIS 350 Game Production
  * Jacob Zydorowicz, Noah Trillizio
- * Project 2 Mole Mania
+ * Mole Mania
  * Detects if player clicks on crit spots or not
+ * Last Updated: October first 2023
  */
+
+#region imported namespaces
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
+#endregion
 
 public class HitMachine : MonoBehaviour
 {
+    Header["Machine Hit Detection"]
+    #region variables
     public bool canHit;
     private int lightNum;
     private MachineMovement machineScript;
@@ -24,6 +32,7 @@ public class HitMachine : MonoBehaviour
 
     public AudioSource MachineSFX;
     public AudioClip machineHitSound;
+    #endregion
 
     private void Start()
     {
@@ -42,7 +51,6 @@ public class HitMachine : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
      
-
         if (Physics.Raycast(ray, out hit))
         {
             //if machine spot is clicked, resets lights

@@ -2,27 +2,36 @@
 // File Name : PlayerMovementController.cs
 // Author : Craig Hughes, Jacob Zydorowicz, Lucas Johnson
 // Creation Date : September 12, 2023
-//
+// Last Updated : October 1 2023
 // Brief Description : Controls player movement 
 *****************************************************************************/
+#region imported namespaces
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+#endregion
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMovementController : MonoBehaviour
 {
+    Header["Player movement"]
     #region Variables
-    [Header("Movement:")]
     public bool canMove = true;
+
+    [Tooltip("The torque value that changes how much yaw changes")]
     [SerializeField] float yawTorque;
+
+    [Tooltip("The torque value that changes how much pitch changes")]
     [SerializeField] float pitchTorque;
+
+    [Tooltip("The torque value that changes how much roll occurs")]
     [SerializeField] float rollTorque;
+
     [SerializeField] float thrust;
     [SerializeField] float reverseThrust;
-    [SerializeField] float currentThrust;
+    private currentThrust;
 
     // Physics
     private Rigidbody playerRB;

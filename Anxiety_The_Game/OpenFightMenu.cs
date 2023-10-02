@@ -1,17 +1,25 @@
-﻿using DigitalRuby.SimpleLUT;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-/*
+﻿/*
+ * CIS 350 Game Production
  * Anna Breuker, Jacob Zydorowicz, Caleb Kahn
  * Project 5 
  * Opens the fight menu when player touches a cloud.
+ * Last Updated: October first 2023
  */
 
 //this is supposed to be attached to the cloud prefab- might recode it to be attached to the player because this "FindGameObjectWithTag" isn't finding the game object with tag.
+#region imported namespaces
+using DigitalRuby.SimpleLUT;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
+using UnityEngine;
+using UnityEngine.UI;
+#endregion
+
 public class OpenFightMenu : MonoBehaviour
 {
+    Header["Open Fight Menus"]
+    #region variables
     private OverworldAnxietyEffect worldEffect;
     private PlayerStats enemyStats;
 
@@ -54,6 +62,7 @@ public class OpenFightMenu : MonoBehaviour
     public int enemyChoice = 0;
 
     public SimpleLUT cameraLUT;
+    #endregion
 
     void Start()
     {
@@ -64,37 +73,34 @@ public class OpenFightMenu : MonoBehaviour
         effectSource.Stop();
 
         enemyStats = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
-        //fightMenu = GameObject.FindGameObjectWithTag("FightMenu");
         worldEffect = GameObject.FindGameObjectWithTag("AnxietyEffect").GetComponent<OverworldAnxietyEffect>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>();
         darknessEffect = GameObject.FindGameObjectWithTag("Darkness Effect").GetComponent<Image>();
-        //description = GameObject.FindGameObjectWithTag("DescriptionBox").GetComponentInChildren<Text>();
     }
 
+    //determines which type of fight to start on collision
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Cloud") && !startingBattle)
         {
-            Debug.Log("Normal Fight Start");
             StartCoroutine(OpenMenuOnDelay(other.gameObject));
         }
         else if (other.CompareTag("Tutorial Cloud") && !startingBattle)
         {
-            Debug.Log("Tutorial Fight Start");
             StartCoroutine(OpenMenuOnDelay(other.gameObject));
         }
         else if (other.CompareTag("Lightbulb") && !startingBattle)
         {
-            Debug.Log("Lightbulb Fight Start");
             StartCoroutine(StartLightbulbFight(other.gameObject));
         }
         else if (other.CompareTag("Final Boss Cloud") && !startingBattle)
         {
-            Debug.Log("Boss Fight Start");
             StartCoroutine(StartBossFight(other.gameObject));
         }
     }
 
+    #region IEnumerators
+    //delays menu opening
     IEnumerator OpenMenuOnDelay(GameObject cloud)
     {
         playerAudio.Stop();
@@ -127,7 +133,6 @@ public class OpenFightMenu : MonoBehaviour
         {
             clouds[i].GetComponent<CloudMovement>().canDie = false;
         }
-        //float darknessAlpha = darknessEffect.color.a;
         float darknessAlpha = -cameraLUT.Brightness;
         if (darknessAlpha == 0)
         {
@@ -150,7 +155,6 @@ public class OpenFightMenu : MonoBehaviour
                 effects[i].GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, alpha[i] * (menuDelayTime - timer) / menuDelayTime);
             }
             cameraLUT.Brightness = -darknessAlpha * (menuDelayTime - timer) / menuDelayTime;
-            //darknessEffect.color = new Color(0f, 0f, 0f, darknessAlpha * (menuDelayTime - timer) / menuDelayTime);
         }
 
         //When the time has been waited
@@ -199,7 +203,6 @@ public class OpenFightMenu : MonoBehaviour
 
         for (int i = 0; i < attackButtons.Length; i++)
         {
-            //Debug.Log(attackButtons[i].GetComponentInChildren<Text>().text);
             if (enemyNameDisplayed.text == "Glass Eye")
             {
                 if (enemyStats.Lightbulb01pickedup == false && i == 0)
@@ -263,6 +266,7 @@ public class OpenFightMenu : MonoBehaviour
         }
     }
 
+    //handles light bulb fights throughout game
     IEnumerator StartLightbulbFight(GameObject lightbulb)
     {
         playerAudio.Stop();
@@ -290,7 +294,6 @@ public class OpenFightMenu : MonoBehaviour
         {
             clouds[i].GetComponent<CloudMovement>().canDie = false;
         }
-        //float darknessAlpha = darknessEffect.color.a;
         float darknessAlpha = -cameraLUT.Brightness;
         if (darknessAlpha == 0)
         {
@@ -310,7 +313,6 @@ public class OpenFightMenu : MonoBehaviour
                 effects[i].GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, alpha[i] * (menuDelayTime - timer) / menuDelayTime);
             }
             cameraLUT.Brightness = -darknessAlpha * (menuDelayTime - timer) / menuDelayTime;
-            //darknessEffect.color = new Color(0f, 0f, 0f, darknessAlpha * (menuDelayTime - timer) / menuDelayTime);
         }
 
         //When the time has been waited
@@ -339,9 +341,9 @@ public class OpenFightMenu : MonoBehaviour
         enemyStats.attributes[2].value.BaseValue = enemies[enemyNum].health;
         enemyHealthBar.GetComponent<ProgressBar>().maximum = enemies[enemyNum].health;
 
+        //determines what enemy menus to open
         for (int i = 0; i < attackButtons.Length; i++)
         {
-            //Debug.Log(attackButtons[i].GetComponentInChildren<Text>().text);
             if (enemyNameDisplayed.text == "Glass Eye")
             {
                 if (enemyStats.Lightbulb01pickedup == false && i == 0)
@@ -357,6 +359,7 @@ public class OpenFightMenu : MonoBehaviour
                     attackButtons[i].GetComponentInChildren<Text>().text = attackNames[i];
                 }
             }
+
             if (enemyNameDisplayed.text == "Liar Smiler")
             {
                 if (enemyStats.Lightbulb05pickedup == false && i == 0)
@@ -372,6 +375,7 @@ public class OpenFightMenu : MonoBehaviour
                     attackButtons[i].GetComponentInChildren<Text>().text = attackNames[4 + i];
                 }
             }
+
             if (enemyNameDisplayed.text == "Scramble Sound")
             {
                 if (enemyStats.Lightbulb07pickedup == false && i == 0)
@@ -387,6 +391,7 @@ public class OpenFightMenu : MonoBehaviour
                     attackButtons[i].GetComponentInChildren<Text>().text = attackNames[8 + i];
                 }
             }
+
             if (enemyNameDisplayed.text == "Question Air")
             {
                 if (enemyStats.Lightbulb03pickedup == false && i == 0)
@@ -405,6 +410,7 @@ public class OpenFightMenu : MonoBehaviour
         }
     }
 
+    //Starts boss fight sequence when player enters trigger
     IEnumerator StartBossFight(GameObject boss)
     {
         playerAudio.Stop();
@@ -436,6 +442,5 @@ public class OpenFightMenu : MonoBehaviour
         enemyStats.attributes[2].value.BaseValue = finalBoss.health;
         enemyHealthBar.GetComponent<ProgressBar>().maximum = finalBoss.health;
     }
-
-    //enemyPortrait.sprite = enemies[1].enemySprite;
+    #endregion
 }

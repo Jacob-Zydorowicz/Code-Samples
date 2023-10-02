@@ -1,17 +1,23 @@
 /*
- * (Jacob Welch, Jacob Zydorowicz)
- * (PlayerBuildController)
- * (CitySim)
- * (Description: )
+ * CIS 450 Programming design patterns
+ * Jacob Welch, Jacob Zydorowicz
+ * City of Tomorrow
+ * Controller of player building placement
+ * Last Updated: October first 2023
  */
+
+#region imported namespaces
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
+#endregion
 
 public class PlayerBuildController : MonoBehaviour
 {
+    Header["Building controller"]
     #region Fields
     private int currentBuildCost=0;
 
@@ -61,7 +67,6 @@ public class PlayerBuildController : MonoBehaviour
 
             return Instance.placeBuildingCommand.HasBuilding(Instance.buildingToSell);
 
-            //return recieveMoneyAbilities.Length != 0 || Instance.placeBuildingCommand.HasBuilding(Instance.buildingToSell);
         }
     }
     #endregion
